@@ -1,0 +1,10 @@
+# Ignore TTS model files
+tts_models/
+*.pth
+*.zip
+*.tar.gz
+data/
+audio/
+public/videos/
+__pycache__/
+.env
