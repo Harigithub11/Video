@@ -45,12 +45,14 @@ os.makedirs(MODEL_DIR, exist_ok=True)
 PIXABAY_API_KEY = "48738698-6ae327a6f8a04d813fa6c6101"
 FREESOUND_API_KEY = "V3fdjHuyYMmUc1qmUFnZ0FOW6SBebGP980uryz4Y"
 
-# Load Coqui TTS Model
-MODEL_NAME = "tts_models/en/ljspeech/fast_pitch"
+# Load Coqui TTS Model (Optimized)
+MODEL_NAME = "tts_models/en/ljspeech/speedy-speech"
 
-# Check and download model if missing
+# Use a persistent model directory to avoid redownloading
+MODEL_PATH = os.path.join(MODEL_DIR, MODEL_NAME.replace("/", "--"))
+
 print("🔍 Checking for TTS model...")
-if not os.path.exists(os.path.join(MODEL_DIR, MODEL_NAME)):
+if not os.path.exists(MODEL_PATH):
     print("📥 Downloading TTS model...")
     coqui_tts = TTS(MODEL_NAME)
     coqui_tts.download()
@@ -98,7 +100,7 @@ async def fetch_video(keyword):
                     if videos:
                         return videos[0]["videos"]["medium"]["url"]
     except Exception as e:
-        print(f"Error fetching video for {keyword}: {e}")
+        print(f"❌ Error fetching video for {keyword}: {e}")
     return None
 
 # Fetch background audio from Freesound
@@ -113,7 +115,7 @@ async def fetch_background_audio(keyword):
                     if sounds:
                         return sounds[0]["previews"]["preview-hq-mp3"]
     except Exception as e:
-        print(f"Error fetching background audio for {keyword}: {e}")
+        print(f"❌ Error fetching background audio for {keyword}: {e}")
     return None
 
 # Convert text to speech using Coqui TTS
