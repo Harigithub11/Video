@@ -46,7 +46,7 @@ PIXABAY_API_KEY = "48738698-6ae327a6f8a04d813fa6c6101"
 FREESOUND_API_KEY = "V3fdjHuyYMmUc1qmUFnZ0FOW6SBebGP980uryz4Y"
 
 # Load Coqui TTS Model
-MODEL_NAME = "tts_models/en/ljspeech/tacotron2-DDC"
+MODEL_NAME = "tts_models/en/ljspeech/fast_pitch"
 
 # Check and download model if missing
 print("🔍 Checking for TTS model...")
