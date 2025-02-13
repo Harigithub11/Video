@@ -14,6 +14,8 @@ from docx import Document
 from nltk.corpus import stopwords
 from TTS.api import TTS  # Coqui TTS
 from io import BytesIO
+from TTS.api import TTS
+
 
 # Download stopwords
 nltk.download("stopwords")
@@ -47,19 +49,22 @@ FREESOUND_API_KEY = "V3fdjHuyYMmUc1qmUFnZ0FOW6SBebGP980uryz4Y"
 
 # Load Coqui TTS Model (Optimized)
 MODEL_NAME = "tts_models/en/ljspeech/speedy-speech"
-
-# Use a persistent model directory to avoid redownloading
+MODEL_DIR = "/app/models"  # Persistent directory
 MODEL_PATH = os.path.join(MODEL_DIR, MODEL_NAME.replace("/", "--"))
 
-print("🔍 Checking for TTS model...")
-if not os.path.exists(MODEL_PATH):
-    print("📥 Downloading TTS model...")
-    coqui_tts = TTS(MODEL_NAME)
-    coqui_tts.download()
-    print("✅ TTS model downloaded.")
+# Ensure model directory exists
+os.makedirs(MODEL_DIR, exist_ok=True)
 
-# Load the model
-coqui_tts = TTS(MODEL_NAME)
+# Check if model is already downloaded
+if not os.path.exists(MODEL_PATH):
+    print("📥 Downloading TTS model for the first time...")
+    coqui_tts = TTS(MODEL_NAME)
+    coqui_tts.download(model_path=MODEL_PATH)  # Store model in a persistent directory
+    print("✅ TTS model downloaded and stored.")
+
+# Load the model (does not redownload)
+coqui_tts = TTS(model_path=MODEL_PATH)
+
 
 # Text input request model
 class TextRequest(BaseModel):
